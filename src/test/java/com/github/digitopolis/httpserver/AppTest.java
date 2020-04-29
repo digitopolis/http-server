@@ -1,4 +1,4 @@
-package com.github.digitopolis;
+package com.github.digitopolis.httpserver;
 
 import junit.framework.Test;
 import junit.framework.TestCase;
