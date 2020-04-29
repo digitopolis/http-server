@@ -4,6 +4,7 @@ import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
 import java.net.ServerSocket;
+import java.net.Socket;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -25,5 +26,12 @@ public class SocketCreatorTest {
         ServerSocket testSocket = SocketCreator.createServerSocket(5555);
         assertEquals(testSocket.getLocalPort(), 5555);
         testSocket.close();
+    }
+
+    @Test
+    public void testCreatesServerClientSocket() throws IOException {
+        MockServerSocket mockServerSocket = new MockServerSocket();
+        Socket clientSocket = SocketCreator.createServerClientSocket(mockServerSocket);
+        assertNotNull(clientSocket);
     }
 }

@@ -4,6 +4,7 @@ import com.github.digitopolis.httpserver.cli.CLI;
 import com.github.digitopolis.httpserver.socket.SocketCreator;
 
 import java.net.ServerSocket;
+import java.net.Socket;
 
 public class Server {
     private final int port;
@@ -17,6 +18,8 @@ public class Server {
                 ServerSocket serverSocket = SocketCreator.createServerSocket(port)
                 ){
             cli.printMessage("Server started at port " + port);
+            Socket clientSocket = SocketCreator.createServerClientSocket(serverSocket);
+            cli.printMessage("Client connected");
         }catch (Exception e) {
             cli.printMessage(e.getMessage());
         }
