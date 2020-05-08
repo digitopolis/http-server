@@ -9,8 +9,26 @@ public class InputValidator {
         try {
             return Integer.parseInt(input);
         } catch (NumberFormatException e) {
-            cli.printMessage("Invalid port: " + e.getMessage() + "\nUsing default port(5000)");
-            return 5000;
+            cli.printMessage("Invalid port: " + e.getMessage() + "\nUsing default port(80)");
+            return 80;
+        }
+    }
+
+    public static boolean validGetMethod(String input) {
+        String[] initialLine = input.split(" ");
+        try {
+            String method = initialLine[0];
+            String path = initialLine[1];
+            String httpVersion = initialLine[2];
+            if (method.equals("GET")) {
+                return true;
+            } else {
+                cli.printMessage("Please use GET method");
+                return false;
+            }
+        } catch (ArrayIndexOutOfBoundsException e) {
+            cli.printMessage("Invalid format, should be: [METHOD] [PATH] [HTTP VERSION]");
+            return false;
         }
     }
 }

@@ -4,6 +4,7 @@ import com.github.digitopolis.httpserver.cli.CLI;
 import com.github.digitopolis.httpserver.parser.RequestParser;
 import com.github.digitopolis.httpserver.response.HTTPResponse;
 import com.github.digitopolis.httpserver.router.Router;
+import com.github.digitopolis.httpserver.validator.InputValidator;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
@@ -26,9 +27,13 @@ public class HttpThread extends Thread {
             cli.printMessage("Client connected");
             String request = in.readLine();
             cli.printMessage(request);
-            HTTPResponse response = Router.handleRequest(RequestParser.parseInput(request));
-            cli.printMessage(response.getStatusLine());
-            out.println(response.getStatusLine());
+            if (InputValidator.validGetMethod(request)) {
+                HTTPResponse response = Router.handleRequest(RequestParser.parseInput(request));
+                cli.printMessage(response.getStatusLine());
+                out.println(response.getStatusLine());
+            } else {
+                out.println("Please send request in the format: GET [PATH] [HTTP VERSION]");
+            }
         } catch (Exception e) {
             e.printStackTrace();
         }

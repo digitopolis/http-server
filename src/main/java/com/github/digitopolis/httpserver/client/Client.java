@@ -31,9 +31,17 @@ public class Client {
                 BufferedReader in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
                 ){
             cli.printMessage("Client connected at " + address + " on port " + port);
+            sendGetRequest(out, in);
         } catch (Exception e) {
             cli.printMessage("Unable to connect at port " + port + ": " + e.getMessage());
             throw e;
         }
+    }
+    public static void sendGetRequest(PrintWriter out, BufferedReader in) throws IOException {
+        cli.printMessage("Enter the path of the resource you'd like to request:");
+        String path = cli.getInput();
+        out.println("GET " + path + " HTTP/1.1");
+        String response = in.readLine();
+        cli.printMessage(response);
     }
 }
