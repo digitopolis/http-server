@@ -12,6 +12,6 @@ public class HTTPResponse {
     }
 
     public String getStatusLine() {
-        return String.format("%s %s %s", httpVersion, statusCode, reason);
+        return String.format("%s %s %s", httpVersion, statusCode, reason) + "\r\n";
     }
 }
