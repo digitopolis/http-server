@@ -24,6 +24,10 @@ public class HTTPResponse {
     }
 
     public void addBody(String content) {
+        this.body = content;
+    }
+
+    public void addBodyHTML(String content) {
         this.body = HTMLBuilder.addBody(content);
     }
 
