@@ -2,6 +2,8 @@ package com.github.digitopolis.httpserver.response;
 
 import com.github.digitopolis.httpserver.HTMLBuilder;
 
+import java.util.HashMap;
+
 public class HTTPResponse {
     public String httpVersion;
     public String statusCode;
@@ -9,6 +11,7 @@ public class HTTPResponse {
     public String method;
     public String body;
     public String contentType;
+    public HashMap<String, String> headers;
     private final HTMLBuilder HTMLBuilder = new HTMLBuilder();
 
     public HTTPResponse(String httpVersion, String statusCode, String reason) {
@@ -17,10 +20,11 @@ public class HTTPResponse {
         this.reason = reason;
         this.body = "";
         this.contentType = "";
+        this.headers = new HashMap<>();
     }
 
     public void addContentType(String contentType) {
-        this.contentType = contentType;
+        this.contentType = "Content-Type: " + contentType;
     }
 
     public void addBody(String content) {
@@ -29,6 +33,10 @@ public class HTTPResponse {
 
     public void addBodyHTML(String content) {
         this.body = HTMLBuilder.addBody(content);
+    }
+
+    public void addHeader(String key, String value) {
+        headers.put(key, value);
     }
 
     public String getStatusLine() {
