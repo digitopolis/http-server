@@ -14,7 +14,7 @@ public class App
     }
 
     public static void startServer() {
-        cli.printMessage("Enter a port number to start an echo server:");
+        cli.printMessage("Enter a port number to start the server:");
         String port = cli.getInput();
         Server server = new Server(inputValidator.validatePort(port));
         server.start();
