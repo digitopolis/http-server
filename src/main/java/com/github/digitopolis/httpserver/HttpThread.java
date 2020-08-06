@@ -17,6 +17,7 @@ public class HttpThread extends Thread {
     private Socket socket;
     private CLI cli = new CLI();
     private ResponseFormatter formatter = new ResponseFormatter();
+    private RequestParser requestParser = new RequestParser();
 
     public HttpThread(Socket socket) {
         this.socket = socket;
@@ -28,16 +29,10 @@ public class HttpThread extends Thread {
                 BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream()))
                 ){
             cli.printMessage("Client connected");
-            String request = in.readLine();
-            cli.printMessage(request);
-            if (InputValidator.validGetMethod(request)) {
-                HttpRequest parsedRequest = RequestParser.parseInput(request);
-                HTTPResponse response = Router.handleRequest(parsedRequest);
-                cli.printMessage(response.getStatusLine());
-                out.println(formatter.format(parsedRequest.method, response));
-            } else {
-                out.println("Please send request in the format: GET [PATH] [HTTP VERSION]");
-            }
+            HttpRequest parsedRequest = requestParser.parseInput(in);
+            HTTPResponse response = Router.handleRequest(parsedRequest);
+            cli.printMessage(response.getStatusLine());
+            out.println(formatter.format(parsedRequest.method, response));
         } catch (Exception e) {
             e.printStackTrace();
         }
