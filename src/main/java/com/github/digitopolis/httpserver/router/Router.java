@@ -13,6 +13,7 @@ public class Router {
         routes.put("/simple_get", new String[] { "GET", "HEAD"});
         routes.put("/simple_get_with_body", new String[] { "GET", "HEAD" });
         routes.put("/head_request", new String[] { "HEAD" });
+        routes.put("/echo_body", new String[] { "POST" });
     }
 
     public static HTTPResponse handleRequest(HttpRequest request) {
@@ -27,8 +28,13 @@ public class Router {
                     return new HTTPResponse(request.httpVersion, "200", "OK");
                 case "/simple_get_with_body":
                     response = new HTTPResponse(request.httpVersion, "200", "OK");
-                    response.addContentType("Content-Type: text/html");
+                    response.addContentType("text/html");
                     response.addBodyHTML("Hello world!");
+                    return response;
+                case "/echo_body":
+                    response = new HTTPResponse(request.httpVersion, "200", "OK");
+                    response.addContentType(request.headers.get("Content-Type"));
+                    response.addBody(request.body);
                     return response;
                 default:
                     return new HTTPResponse(request.httpVersion, "404", "Not Found");

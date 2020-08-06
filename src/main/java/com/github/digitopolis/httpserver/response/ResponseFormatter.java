@@ -9,6 +9,7 @@ public class ResponseFormatter {
         }
         switch (method) {
             case "GET":
+            case "POST":
                 return formatGet(response);
             case "HEAD":
                 return formatHead(response);
