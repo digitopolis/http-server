@@ -37,6 +37,7 @@ buildNumber.properties
 .mvn/wrapper/maven-wrapper.jar
 
 .idea/
+.DS_Store
 
 # set of acceptance tests
 http_server_spec/
