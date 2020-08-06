@@ -14,6 +14,7 @@ public class Router {
         routes.put("/simple_get_with_body", new String[] { "GET", "HEAD" });
         routes.put("/head_request", new String[] { "HEAD" });
         routes.put("/echo_body", new String[] { "POST" });
+        routes.put("/redirect", new String[] { "GET" });
     }
 
     public static HTTPResponse handleRequest(HttpRequest request) {
@@ -36,6 +37,8 @@ public class Router {
                     response.addContentType(request.headers.get("Content-Type"));
                     response.addBody(request.body);
                     return response;
+                case "/redirect":
+                    return new HTTPResponse(request.httpVersion, "301", "Moved Permanently");
                 default:
                     return new HTTPResponse(request.httpVersion, "404", "Not Found");
             }
