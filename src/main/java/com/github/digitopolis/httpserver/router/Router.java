@@ -29,7 +29,7 @@ public class Router {
                     return new HTTPResponse(request.httpVersion, "200", "OK");
                 case "/simple_get_with_body":
                     response = new HTTPResponse(request.httpVersion, "200", "OK");
-                    response.addContentType("text/html");
+                    response.addHeader("Content-Type", "text/html");
                     response.addBodyHTML("Hello world!");
                     return response;
                 case "/echo_body":
@@ -38,7 +38,9 @@ public class Router {
                     response.addBody(request.body);
                     return response;
                 case "/redirect":
-                    return new HTTPResponse(request.httpVersion, "301", "Moved Permanently");
+                    response = new HTTPResponse(request.httpVersion, "301", "Moved Permanently");
+                    response.addHeader("Location", "http://127.0.0.1/simple_get");
+                    return response;
                 default:
                     return new HTTPResponse(request.httpVersion, "404", "Not Found");
             }

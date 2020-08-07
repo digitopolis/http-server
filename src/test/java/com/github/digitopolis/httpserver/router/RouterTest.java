@@ -23,4 +23,11 @@ public class RouterTest {
         HTTPResponse response = Router.handleRequest(redirectRequest);
         assertEquals("301", response.statusCode);
     }
+
+    @Test
+    public void testResponseForRedirectHasLocationHeader() {
+        HttpRequest redirectRequest = new HttpRequest("GET", "/redirect", "HTTP/1.1");
+        HTTPResponse response = Router.handleRequest(redirectRequest);
+        assertTrue(response.headers.containsKey("Location"));
+    }
 }
