@@ -19,7 +19,6 @@ public class RequestParser {
         parseInitialLine(input);
         parseHeaders(input);
         if (headers.containsKey("Content-Length")) {
-            System.out.println("headers includes content length");
             parseBody(input);
         }
 
@@ -57,7 +56,6 @@ public class RequestParser {
 
     private void parseBody(BufferedReader input) throws IOException {
         if (headers.get("Content-Length").equals("0")) return;
-        System.out.println("parsing body");
         Integer contentLength = Integer.parseInt(headers.get("Content-Length"));
         StringBuilder requestBody = new StringBuilder();
         for (int i = 0; i < contentLength; i++) {
