@@ -21,7 +21,7 @@ public class ResponseFormatter {
         StringBuilder formattedGet = new StringBuilder();
         formattedGet.append(response.getStatusLine());
         formattedGet.append(CRLF);
-        formattedGet.append(response.getContentType());
+        formattedGet.append(response.getHeaders());
         formattedGet.append(CRLF);
         formattedGet.append(CRLF);
         formattedGet.append(response.getBody());
