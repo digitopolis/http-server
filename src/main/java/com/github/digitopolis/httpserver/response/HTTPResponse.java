@@ -3,6 +3,7 @@ package com.github.digitopolis.httpserver.response;
 import com.github.digitopolis.httpserver.HTMLBuilder;
 
 import java.util.HashMap;
+import org.apache.commons.lang3.StringUtils;
 
 public class HTTPResponse {
     public String httpVersion;
@@ -41,6 +42,17 @@ public class HTTPResponse {
 
     public String getStatusLine() {
         return String.format("%s %s %s", httpVersion, statusCode, reason);
+    }
+
+    public String getHeaders() {
+        StringBuilder headerString = new StringBuilder();
+        if (!headers.isEmpty()) {
+            headers.forEach((header, value) -> {
+                headerString.append(String.format("%s: %s\n", header, value));
+            });
+            return StringUtils.chomp(headerString.toString());
+        }
+        return "";
     }
     public String getMethod() {
         return method;
