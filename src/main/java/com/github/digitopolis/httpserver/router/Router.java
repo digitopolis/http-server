@@ -6,24 +6,27 @@ import com.github.digitopolis.httpserver.response.HTTPResponse;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
+import org.apache.commons.lang3.StringUtils;
 
 public class Router {
     private static final HashMap<String, String[]> routes = new HashMap<>();
     static {
-        routes.put("/simple_get", new String[] { "GET", "HEAD"});
+        routes.put("/simple_get", new String[] { "GET", "HEAD" });
         routes.put("/simple_get_with_body", new String[] { "GET", "HEAD" });
-        routes.put("/head_request", new String[] { "HEAD" });
+        routes.put("/head_request", new String[] { "HEAD", "OPTIONS" });
         routes.put("/echo_body", new String[] { "POST" });
         routes.put("/redirect", new String[] { "GET" });
     }
 
     public static HTTPResponse handleRequest(HttpRequest request) {
         if (routes.containsKey(request.path)) {
+            HTTPResponse response;
             List<String> methodList = Arrays.asList(routes.get(request.path));
             if (!methodList.contains(request.method)) {
-                return new HTTPResponse(request.httpVersion, "405", "Method Not Allowed");
+                 response = new HTTPResponse(request.httpVersion, "405", "Method Not Allowed");
+                 response.addHeader("Allow", StringUtils.join(methodList, ", "));
+                 return response;
             }
-            HTTPResponse response;
             switch (request.path) {
                 case "/simple_get":
                     return new HTTPResponse(request.httpVersion, "200", "OK");
