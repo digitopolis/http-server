@@ -45,4 +45,20 @@ public class RouterTest {
         assertTrue(response.headers.containsKey("Allow"));
         assertEquals("HEAD, OPTIONS", response.headers.get("Allow"));
     }
+
+    @Test
+    public void testResponseForOptionsHasAllowHeader() {
+        HttpRequest wrongMethodRequest = new HttpRequest("OPTIONS", "/method_options", "HTTP/1.1");
+        HTTPResponse response = Router.handleRequest(wrongMethodRequest);
+        assertTrue(response.headers.containsKey("Allow"));
+        assertEquals("GET, HEAD, OPTIONS", response.headers.get("Allow"));
+    }
+
+    @Test
+    public void testResponseForOptionsHasContentLengthHeader() {
+        HttpRequest wrongMethodRequest = new HttpRequest("OPTIONS", "/method_options", "HTTP/1.1");
+        HTTPResponse response = Router.handleRequest(wrongMethodRequest);
+        assertTrue(response.headers.containsKey("Content-Length"));
+        assertEquals("0", response.headers.get("Content-Length"));
+    }
 }

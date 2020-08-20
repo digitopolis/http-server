@@ -16,6 +16,7 @@ public class Router {
         routes.put("/head_request", new String[] { "HEAD", "OPTIONS" });
         routes.put("/echo_body", new String[] { "POST" });
         routes.put("/redirect", new String[] { "GET" });
+        routes.put("/method_options", new String[] { "GET", "HEAD", "OPTIONS" });
     }
 
     public static HTTPResponse handleRequest(HttpRequest request) {
@@ -26,6 +27,12 @@ public class Router {
                  response = new HTTPResponse(request.httpVersion, "405", "Method Not Allowed");
                  response.addHeader("Allow", StringUtils.join(methodList, ", "));
                  return response;
+            }
+            if (request.method.equals("OPTIONS")) {
+                response = new HTTPResponse(request.httpVersion, "200", "OK");
+                response.addHeader("Allow", StringUtils.join(methodList, ", "));
+                response.addHeader("Content-Length", "0");
+                return response;
             }
             switch (request.path) {
                 case "/simple_get":
