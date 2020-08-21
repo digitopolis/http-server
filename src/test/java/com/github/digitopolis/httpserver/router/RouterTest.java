@@ -30,4 +30,35 @@ public class RouterTest {
         HTTPResponse response = Router.handleRequest(redirectRequest);
         assertTrue(response.headers.containsKey("Location"));
     }
+
+    @Test
+    public void testResponseForWrongMethodHas405StatusCode() {
+        HttpRequest wrongMethodRequest = new HttpRequest("GET", "/head_request", "HTTP/1.1");
+        HTTPResponse response = Router.handleRequest(wrongMethodRequest);
+        assertEquals("405", response.statusCode);
+    }
+
+    @Test
+    public void testResponseForWrongMethodHasAllowedHeader() {
+        HttpRequest wrongMethodRequest = new HttpRequest("GET", "/head_request", "HTTP/1.1");
+        HTTPResponse response = Router.handleRequest(wrongMethodRequest);
+        assertTrue(response.headers.containsKey("Allow"));
+        assertEquals("HEAD, OPTIONS", response.headers.get("Allow"));
+    }
+
+    @Test
+    public void testResponseForOptionsHasAllowHeader() {
+        HttpRequest wrongMethodRequest = new HttpRequest("OPTIONS", "/method_options", "HTTP/1.1");
+        HTTPResponse response = Router.handleRequest(wrongMethodRequest);
+        assertTrue(response.headers.containsKey("Allow"));
+        assertEquals("GET, HEAD, OPTIONS", response.headers.get("Allow"));
+    }
+
+    @Test
+    public void testResponseForOptionsHasContentLengthHeader() {
+        HttpRequest wrongMethodRequest = new HttpRequest("OPTIONS", "/method_options", "HTTP/1.1");
+        HTTPResponse response = Router.handleRequest(wrongMethodRequest);
+        assertTrue(response.headers.containsKey("Content-Length"));
+        assertEquals("0", response.headers.get("Content-Length"));
+    }
 }
